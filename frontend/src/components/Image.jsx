@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import ZoomIcon from '../assets/ZoomIcon';
+import SatIcon from '../assets/SatIcon';
 
 const glassSize = 100;
 const offset = 50;
@@ -75,7 +77,7 @@ function Image() {
           onKeyDown={handleKeyDown}
           tabIndex={0}
       >
-          <h1 className="mb-4 text-2xl text-center text-gray-700">The Hague</h1>
+          {/* <h1 className="mb-4 text-2xl text-center text-gray-700">The Hague</h1> */}
           <div className="flex justify-center items-center">
               <div
                   className="w-768 h-432 relative shadow overflow-hidden mr-4"
@@ -85,29 +87,32 @@ function Image() {
                   <div style={magnifierGlassStyle} />
               </div>
               <div className="flex flex-col ml-4">
-                  <label htmlFor="zoom" style={{width: '80px'}}>Zoom: {Math.round(zoom)}x</label>
+                  <div className="flex items-center">
+                      <ZoomIcon />
+                      <label htmlFor="zoom" className="label m-2">
+                          Zoom: {Math.round(zoom)}x
+                      </label>
+                  </div>
                   <input
                       id="zoom"
+                      className="vertical-slider"
                       type="range"
                       min="1"
                       max="10"
                       value={zoom}
                       onChange={handleZoomChange}
                       orient="vertical"
-                      style={{
-                          writingMode: "bt-lr",
-                          WebkitAppearance: "slider-vertical",
-                          width: "8px",
-                          height: "175px",
-                          padding: "0 5px",
-                      }}
                   />
               </div>
           </div>
           <div className="flex justify-center items-center mt-4">
-              <label htmlFor="saturation">Saturation: {saturation}%</label>
+            <SatIcon/>
+              <label htmlFor="saturation" className="m-2">
+                  Saturation: {saturation}%
+              </label>
               <input
                   id="saturation"
+                  className="horizontal-slider"
                   type="range"
                   min="0"
                   max="100"
@@ -117,7 +122,6 @@ function Image() {
           </div>
       </div>
   );
-  
 }
 
 export default Image;

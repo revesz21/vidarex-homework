@@ -16,3 +16,22 @@
   background: #f3f3f3;
   padding: 20px;
 }
+
+.label {
+  width: 100px;
+}
+
+.vertical-slider {
+  writing-mode: bt-lr;
+  -webkit-appearance: slider-vertical;
+  width: 8px;
+  height: 175px;
+  padding: 0 5px;
+}
+
+.horizontal-slider {
+  width: 200px;
+  height: 8px;
+  padding: 5px 0;
+  -webkit-appearance: slider-horizontal;
+}
