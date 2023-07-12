@@ -11,6 +11,37 @@ const glassSize = 100;
 const offset = 50;
 
 function ImageComponent({ image }) {
+
+  useEffect(() => {
+    var imageObj = new Image();
+    imageObj.onload = function(){
+      
+        drawImage(this);
+      };
+      imageObj.src = image;
+}, [image]);
+
+  function drawImage(imageObj){
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    const hRatio = canvas.width / imageObj.width    ;
+    const vRatio = canvas.height / imageObj.height  ;
+    const ratio  = Math.min ( hRatio, vRatio );
+    context.drawImage(imageObj, 0,0, imageObj.width, imageObj.height, 0,0,imageObj.width*ratio, imageObj.height*ratio);
+
+    const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+    const data = imageData.data;
+
+    for (var i = 0; i < data.length; i += 4) {
+        var red = data[i];
+        var green = data[i + 1];
+        var blue = data[i + 2];
+    }
+
+    context.putImageData(imageData, 0, 0);
+}
+
     const imgRef = useRef();
     const divRef = useRef();
     const [zoom, setZoom] = useState(2);
@@ -31,9 +62,10 @@ function ImageComponent({ image }) {
             width: imgWidth,
             height: imgHeight,
         } = imgRef.current.getBoundingClientRect();
+        
         const cursorX = e.pageX - imgLeft;
         const cursorY = e.pageY - imgTop;
-
+        
         const offsetX =
             cursorX + offset + glassSize > imgWidth ? -offset : offset;
         const offsetY =
@@ -58,7 +90,7 @@ function ImageComponent({ image }) {
         const glassY = cursorY - glassSize / 2 + offsetY;
 
         setMagnifierGlassStyle({
-            backgroundImage: `url(${imgRef.current.src})`,
+            backgroundImage: `url(${image})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: `${imgWidth * zoom}px ${imgHeight * zoom}px`,
             borderRadius: "50%",
@@ -119,7 +151,8 @@ function ImageComponent({ image }) {
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <img ref={imgRef} src={image} alt="Zoomed Image" />
+                    {/* <img ref={imgRef} src={image} alt="Zoomed Image" /> */}
+                    <canvas id="canvas" ref={imgRef} width="768" height="432"/>
                     <div style={magnifierGlassStyle} />
                 </div>
                 <div className="flex flex-col ml-4">
