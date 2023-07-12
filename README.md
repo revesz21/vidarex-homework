@@ -4,14 +4,14 @@ Hi, this is my implementation of the frontend task for the 2nd round. I hope you
 
 ## 🌐 Live Demo
 
-The website is live at:
+The project is live at: [reveszpeter.cloud](https://reveszpeter.cloud/)
 
 ## 🛠️ Built With
 
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 
-##  Task overview ✓
+## Task overview ✓
 
 1. Készíts egy komponenst, ami megjelenít egy nagy felbontású képet (city.jpg) egy 768x432 méretű dobozba zsugorítva. A cursort a kép fölé húzva jelenjen meg egy 50px  sugarú kör, a cursortól 50px távolságra, benne a cursor középpontú, 50px  sugarú kör alatti területhez tartozó képrészlet alapértelmezetten kétszeres nagyításban (zoom funkció). A cursort a kép felett mozgatva a “nagyító” kövesse a cursor mozgását, ezáltal végig lehessen pásztázni a kép összes részletén. A komponens mellett jobbra függőlegesen legyen egy csúszka, amivel a zoomolás mértéke állítható 1-10x nagyítási mérték között, a komponens alatt pedig legyen egy másik csúszka, amivel a kinagyított kép szaturációját lehet beállítani 0-100% érték között. A billentyűzeten a jobbra balra nyilakkal lehessen a szaturációs értéket állítani, az egér görgőjével pedig a zoom mértékét. ✓
 
