@@ -1,7 +1,7 @@
-import Image from "./components/Image"
+import ImageComponent from "./components/ImageComponent"
 
 export default function App() {
   return (
-    <Image/>
+    <ImageComponent image="/the_hague.jpg" />
   )
 }
