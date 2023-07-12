@@ -67,46 +67,57 @@ function Image() {
     }
   };
 
-return (
-    <div
-        ref={divRef}
-        className="full-viewport"
-        onWheel={handleWheel}
-        onKeyDown={handleKeyDown}
-        tabIndex={0}
-    >
-        <h1 className="mb-4 text-2xl text-center text-gray-700">The Hague</h1>
-        <div className="flex">
-            <div
-                className="w-768 h-432 relative shadow overflow-hidden mr-4"
-                onMouseMove={moveMagnifier}
-            >
-                <img ref={imgRef} src="/the_hague.jpg" alt="The Hague" />
-                <div style={magnifierGlassStyle} />
-            </div>
-            <div className="flex flex-col">
-                <label htmlFor="zoom">Zoom: {Math.round(zoom)}x</label>
-                <input
-                    id="zoom"
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={zoom}
-                    onChange={handleZoomChange}
-                />
-                <label htmlFor="saturation">Saturation: {saturation}%</label>
-                <input
-                    id="saturation"
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={saturation}
-                    onChange={handleSaturationChange}
-                />
-            </div>
-        </div>
-    </div>
-);
+  return (
+      <div
+          ref={divRef}
+          className="full-viewport"
+          onWheel={handleWheel}
+          onKeyDown={handleKeyDown}
+          tabIndex={0}
+      >
+          <h1 className="mb-4 text-2xl text-center text-gray-700">The Hague</h1>
+          <div className="flex justify-center items-center">
+              <div
+                  className="w-768 h-432 relative shadow overflow-hidden mr-4"
+                  onMouseMove={moveMagnifier}
+              >
+                  <img ref={imgRef} src="/the_hague.jpg" alt="The Hague" />
+                  <div style={magnifierGlassStyle} />
+              </div>
+              <div className="flex flex-col ml-4">
+                  <label htmlFor="zoom" style={{width: '80px'}}>Zoom: {Math.round(zoom)}x</label>
+                  <input
+                      id="zoom"
+                      type="range"
+                      min="1"
+                      max="10"
+                      value={zoom}
+                      onChange={handleZoomChange}
+                      orient="vertical"
+                      style={{
+                          writingMode: "bt-lr",
+                          WebkitAppearance: "slider-vertical",
+                          width: "8px",
+                          height: "175px",
+                          padding: "0 5px",
+                      }}
+                  />
+              </div>
+          </div>
+          <div className="flex justify-center items-center mt-4">
+              <label htmlFor="saturation">Saturation: {saturation}%</label>
+              <input
+                  id="saturation"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={saturation}
+                  onChange={handleSaturationChange}
+              />
+          </div>
+      </div>
+  );
+  
 }
 
 export default Image;
