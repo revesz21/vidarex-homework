@@ -11,12 +11,64 @@ const glassSize = 100;
 const offset = 50;
 
 function ImageComponent({ image }) {
-    const imgRef = useRef();
-    const divRef = useRef();
-    const [zoom, setZoom] = useState(2);
-    const [saturation, setSaturation] = useState(100);
-    const [showMagnifier, setShowMagnifier] = useState(false);
-    const [magnifierGlassStyle, setMagnifierGlassStyle] = useState({});
+
+  const imgRef = useRef();
+  const divRef = useRef();
+  const [zoom, setZoom] = useState(2);
+  const [red, setRed] = useState(1);
+  const [green, setGreen] = useState(1);
+  const [blue, setBlue] = useState(1);
+  const [focusedColor, setFocusedColor] = useState("red");
+  const [showMagnifier, setShowMagnifier] = useState(false);
+  const [magnifierGlassStyle, setMagnifierGlassStyle] = useState({});
+
+  useEffect(() => {
+    const imageObj = new Image();
+    imageObj.onload = function(){
+      
+        drawImage(this);
+      };
+      imageObj.src = image;
+}, [image, red, green, blue]);
+
+  function drawImage(imageObj){
+    const canvas = document.getElementById("canvas");
+    const context = canvas.getContext("2d");
+
+    const hRatio = canvas.width / imageObj.width;
+    const vRatio = canvas.height / imageObj.height;
+    const ratio  = Math.min ( hRatio, vRatio );
+    context.drawImage(imageObj, 0,0, imageObj.width, imageObj.height, 0,0,imageObj.width*ratio, imageObj.height*ratio);
+    redrawImage(canvas, imageObj)
+}
+
+function redrawImage(canvas, imageObj){
+  const hiddenCanvas = document.createElement('canvas');
+  hiddenCanvas.id = "hiddenCanvas";
+  hiddenCanvas.width = 768;
+  hiddenCanvas.height = 432;
+
+  const context = hiddenCanvas.getContext("2d");
+  
+
+  const hRatio = hiddenCanvas.width / imageObj.width;
+  const vRatio = hiddenCanvas.height / imageObj.height;
+  const ratio  = Math.min ( hRatio, vRatio );
+  context.drawImage(imageObj, 0,0, imageObj.width, imageObj.height, 0,0,imageObj.width*ratio, imageObj.height*ratio);
+
+  const imageData = context.getImageData(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+  const data = imageData.data;
+
+  for (var i = 0; i < data.length; i += 4) {
+      var r = data[i];
+      data[i] = r * red;
+      var g = data[i + 1];
+      data[i + 1] = g * green;
+      var b = data[i + 2];
+      data[i + 2] = b * blue;
+  }
+  canvas.getContext("2d").putImageData(imageData, 0, 0);
+}
 
     useEffect(() => {
         divRef.current.focus();
@@ -31,9 +83,10 @@ function ImageComponent({ image }) {
             width: imgWidth,
             height: imgHeight,
         } = imgRef.current.getBoundingClientRect();
+        
         const cursorX = e.pageX - imgLeft;
         const cursorY = e.pageY - imgTop;
-
+        
         const offsetX =
             cursorX + offset + glassSize > imgWidth ? -offset : offset;
         const offsetY =
@@ -58,7 +111,7 @@ function ImageComponent({ image }) {
         const glassY = cursorY - glassSize / 2 + offsetY;
 
         setMagnifierGlassStyle({
-            backgroundImage: `url(${imgRef.current.src})`,
+            backgroundImage: `url(${image})`,
             backgroundRepeat: "no-repeat",
             backgroundSize: `${imgWidth * zoom}px ${imgHeight * zoom}px`,
             borderRadius: "50%",
@@ -70,7 +123,6 @@ function ImageComponent({ image }) {
             top: `${glassY}px`,
             cursor: "none",
             backgroundPosition: `${bgPosX}px ${bgPosY}px`,
-            filter: `saturate(${saturation}%)`,
         });
     };
 
@@ -87,9 +139,15 @@ function ImageComponent({ image }) {
         setZoom(e.target.value);
     };
 
-    const handleSaturationChange = (e) => {
-        setSaturation(e.target.value);
-    };
+    const handleColorChange = (e) => {
+      if(e.target.id == "red"){
+        setRed(e.target.value/100)
+      }else if(e.target.id == "green"){
+        setGreen(e.target.value/100)
+      }else if(e.target.id == "blue"){
+        setBlue(e.target.value/100)
+      }
+  }
 
     const handleWheel = (e) => {
         const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY * -0.1));
@@ -97,13 +155,41 @@ function ImageComponent({ image }) {
     };
 
     const handleKeyDown = (e) => {
-        if (e.code === "ArrowRight") {
-            setSaturation(Math.min(100, saturation + 1));
-        } else if (e.code === "ArrowLeft") {
-            setSaturation(Math.max(0, saturation - 1));
+      if(e.code === "KeyR"){
+        setFocusedColor("red");
+        console.log(focusedColor)
+      }
+      if(e.code === "KeyG"){
+        setFocusedColor("green");
+      }
+      if(e.code === "KeyB"){
+        setFocusedColor("blue");
+      }
+    
+      if (e.code === "ArrowRight") {
+        if(focusedColor === "red"){
+          setRed(Math.min(1, red + 0.01));
         }
+        if(focusedColor === "green"){
+          setGreen(Math.min(1, green + 0.01));
+        }
+        if(focusedColor === "blue"){
+          setBlue(Math.min(1, blue + 0.01));
+        } 
+      }
+      if (e.code === "ArrowLeft") {
+        if(focusedColor === "red"){
+          setRed(Math.max(0, red - 0.01));
+        }
+        if(focusedColor === "green"){
+          setGreen(Math.max(0, green - 0.01));
+        }
+        if(focusedColor === "blue"){
+          setBlue(Math.max(0, blue - 0.01));
+        } 
+      }
     };
-
+    
     return (
         <div
             ref={divRef}
@@ -119,7 +205,8 @@ function ImageComponent({ image }) {
                     onMouseEnter={handleMouseEnter}
                     onMouseLeave={handleMouseLeave}
                 >
-                    <img ref={imgRef} src={image} alt="Zoomed Image" />
+                    {/* <img ref={imgRef} src={image} alt="Zoomed Image" /> */}
+                    <canvas id="canvas" ref={imgRef} width="768" height="432"/>
                     <div style={magnifierGlassStyle} />
                 </div>
                 <div className="flex flex-col ml-4">
@@ -143,17 +230,47 @@ function ImageComponent({ image }) {
             </div>
             <div className="flex justify-center items-center mt-4">
                 <SatIcon />
-                <label htmlFor="saturation" className="m-2">
-                    Saturation: {saturation}%
+                <label htmlFor="red" className="label m-2">
+                    Red: {Math.round(red*100)}%
                 </label>
                 <input
-                    id="saturation"
+                    id="red"
                     className="horizontal-slider"
                     type="range"
                     min="0"
                     max="100"
-                    value={saturation}
-                    onChange={handleSaturationChange}
+                    value={red*100}
+                    onChange={handleColorChange}
+                />
+            </div>
+            <div className="flex justify-center items-center mt-4">
+                <SatIcon />
+                <label htmlFor="green" className="label m-2">
+                    Green: {Math.round(green*100)}%
+                </label>
+                <input
+                    id="green"
+                    className="horizontal-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={green*100}
+                    onChange={handleColorChange}
+                />
+            </div>
+            <div className="flex justify-center items-center mt-4">
+                <SatIcon />
+                <label htmlFor="blue" className="label m-2">
+                    Blue: {Math.round(blue*100)}%
+                </label>
+                <input
+                    id="blue"
+                    className="horizontal-slider"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={blue*100}
+                    onChange={handleColorChange}
                 />
             </div>
         </div>
