@@ -1,13 +1,18 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 const glassSize = 100;
 const offset = 50;
 
 function Image() {
   const imgRef = useRef();
+  const divRef = useRef();
   const [zoom, setZoom] = useState(2);
   const [saturation, setSaturation] = useState(100);
   const [magnifierGlassStyle, setMagnifierGlassStyle] = useState({});
+
+  useEffect(() => {
+    divRef.current.focus();
+  }, []);
 
   const moveMagnifier = (e) => {
     const { left: imgLeft, top: imgTop, width: imgWidth, height: imgHeight } = imgRef.current.getBoundingClientRect();
@@ -50,7 +55,7 @@ function Image() {
 
   const handleWheel = (e) => {
     e.preventDefault();
-    const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY));
+    const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY * -0.1));
     setZoom(newZoom);
   };
 
@@ -64,7 +69,8 @@ function Image() {
 
 return (
     <div
-        className="flex flex-col items-center justify-center bg-gray-100 p-4"
+        ref={divRef}
+        className="full-viewport"
         onWheel={handleWheel}
         onKeyDown={handleKeyDown}
         tabIndex={0}
