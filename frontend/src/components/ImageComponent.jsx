@@ -62,7 +62,7 @@ function ImageComponent({ image }) {
             backgroundRepeat: "no-repeat",
             backgroundSize: `${imgWidth * zoom}px ${imgHeight * zoom}px`,
             borderRadius: "50%",
-            border: "1px solid white",
+            border: "2px solid white",
             width: `${glassSize}px`,
             height: `${glassSize}px`,
             position: "absolute",
