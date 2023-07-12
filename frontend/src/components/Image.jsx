@@ -1,11 +1,12 @@
 import { useState, useRef } from 'react';
 
 const glassSize = 100;
-const zoom = 2;
 const offset = 50;
 
 function Image() {
   const imgRef = useRef();
+  const [zoom, setZoom] = useState(2);
+  const [saturation, setSaturation] = useState(100);
   const [magnifierGlassStyle, setMagnifierGlassStyle] = useState({});
 
   const moveMagnifier = (e) => {
@@ -35,25 +36,71 @@ function Image() {
       top: `${glassY}px`,
       cursor: 'none',
       backgroundPosition: `${bgPosX}px ${bgPosY}px`,
+      filter: `saturate(${saturation}%)`,
     });
   };
 
-  return (
-    <div className="flex flex-col items-center justify-center bg-gray-100 p-4">
-      <h1 className="mb-4 text-2xl text-center text-gray-700">The Hague</h1>
-      <div 
-        className="w-768 h-432 relative shadow overflow-hidden"
-        onMouseMove={moveMagnifier}
-      >
-        <img
-          ref={imgRef}
-          src="/the_hague.jpg"
-          alt="The Hague"
-        />
-        <div style={magnifierGlassStyle} />
-      </div>
+  const handleZoomChange = (e) => {
+    setZoom(e.target.value);
+  };
+
+  const handleSaturationChange = (e) => {
+    setSaturation(e.target.value);
+  };
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY));
+    setZoom(newZoom);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.code === 'ArrowRight') {
+      setSaturation(Math.min(100, saturation + 1));
+    } else if (e.code === 'ArrowLeft') {
+      setSaturation(Math.max(0, saturation - 1));
+    }
+  };
+
+return (
+    <div
+        className="flex flex-col items-center justify-center bg-gray-100 p-4"
+        onWheel={handleWheel}
+        onKeyDown={handleKeyDown}
+        tabIndex={0}
+    >
+        <h1 className="mb-4 text-2xl text-center text-gray-700">The Hague</h1>
+        <div className="flex">
+            <div
+                className="w-768 h-432 relative shadow overflow-hidden mr-4"
+                onMouseMove={moveMagnifier}
+            >
+                <img ref={imgRef} src="/the_hague.jpg" alt="The Hague" />
+                <div style={magnifierGlassStyle} />
+            </div>
+            <div className="flex flex-col">
+                <label htmlFor="zoom">Zoom: {Math.round(zoom)}x</label>
+                <input
+                    id="zoom"
+                    type="range"
+                    min="1"
+                    max="10"
+                    value={zoom}
+                    onChange={handleZoomChange}
+                />
+                <label htmlFor="saturation">Saturation: {saturation}%</label>
+                <input
+                    id="saturation"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={saturation}
+                    onChange={handleSaturationChange}
+                />
+            </div>
+        </div>
     </div>
-  );
+);
 }
 
 export default Image;
