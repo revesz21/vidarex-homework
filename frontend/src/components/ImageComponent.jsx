@@ -15,6 +15,7 @@ function ImageComponent({ image }) {
     const divRef = useRef();
     const [zoom, setZoom] = useState(2);
     const [saturation, setSaturation] = useState(100);
+    const [showMagnifier, setShowMagnifier] = useState(false);
     const [magnifierGlassStyle, setMagnifierGlassStyle] = useState({});
 
     useEffect(() => {
@@ -22,6 +23,8 @@ function ImageComponent({ image }) {
     }, []);
 
     const moveMagnifier = (e) => {
+      if (!showMagnifier) return;
+
         const {
             left: imgLeft,
             top: imgTop,
@@ -71,6 +74,15 @@ function ImageComponent({ image }) {
         });
     };
 
+    const handleMouseEnter = () => {
+      setShowMagnifier(true);
+  };
+
+  const handleMouseLeave = () => {
+      setShowMagnifier(false);
+      setMagnifierGlassStyle({});
+  };
+
     const handleZoomChange = (e) => {
         setZoom(e.target.value);
     };
@@ -80,7 +92,6 @@ function ImageComponent({ image }) {
     };
 
     const handleWheel = (e) => {
-        e.preventDefault();
         const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY * -0.1));
         setZoom(newZoom);
     };
@@ -105,6 +116,8 @@ function ImageComponent({ image }) {
                 <div
                     className="w-768 h-432 relative shadow overflow-hidden mr-4"
                     onMouseMove={moveMagnifier}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                 >
                     <img ref={imgRef} src={image} alt="Zoomed Image" />
                     <div style={magnifierGlassStyle} />
