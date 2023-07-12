@@ -152,12 +152,13 @@ function redrawImage(canvas, imageObj){
     const handleWheel = (e) => {
         const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY * -0.1));
         setZoom(newZoom);
+
+        moveMagnifier(e);
     };
 
     const handleKeyDown = (e) => {
       if(e.code === "KeyR"){
         setFocusedColor("red");
-        console.log(focusedColor)
       }
       if(e.code === "KeyG"){
         setFocusedColor("green");
