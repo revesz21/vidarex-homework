@@ -230,7 +230,7 @@ function redrawImage(canvas, imageObj){
                 </div>
             </div>
             <div className="flex justify-center items-center mt-4">
-                <SatIcon />
+                <SatIcon strokeColor="red"/>
                 <label htmlFor="red" className="label m-2">
                     Red: {Math.round(red*100)}%
                 </label>
@@ -245,7 +245,7 @@ function redrawImage(canvas, imageObj){
                 />
             </div>
             <div className="flex justify-center items-center mt-4">
-                <SatIcon />
+                <SatIcon strokeColor="green"/>
                 <label htmlFor="green" className="label m-2">
                     Green: {Math.round(green*100)}%
                 </label>
@@ -260,7 +260,7 @@ function redrawImage(canvas, imageObj){
                 />
             </div>
             <div className="flex justify-center items-center mt-4">
-                <SatIcon />
+                <SatIcon strokeColor="blue"/>
                 <label htmlFor="blue" className="label m-2">
                     Blue: {Math.round(blue*100)}%
                 </label>

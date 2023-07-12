@@ -1,10 +1,12 @@
-const SatIcon = () => (
+import PropTypes from 'prop-types';
+
+const SatIcon = ({fillColor = "none", strokeColor = "currentColor"}) => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
-        fill="none"
+        fill={fillColor}
         viewBox="0 0 24 24"
         strokeWidth={1.5}
-        stroke="currentColor"
+        stroke={strokeColor}
         className="w-6 h-6"
     >
         <path
@@ -14,5 +16,10 @@ const SatIcon = () => (
         />
     </svg>
 );
+
+SatIcon.propTypes = {
+    fillColor: PropTypes.string,
+    strokeColor: PropTypes.string,
+};
 
 export default SatIcon;
