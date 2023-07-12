@@ -22,7 +22,8 @@ The project is live at: [reveszpeter.cloud](https://reveszpeter.cloud/)
 
 Készíts egy komponenst, ami megjelenít egy nagy felbontású képet (city.jpg) egy 768x432 méretű dobozba zsugorítva. A cursort a kép fölé húzva jelenjen meg egy 50px  sugarú kör, a cursortól 50px távolságra, benne a cursor középpontú, 50px  sugarú kör alatti területhez tartozó képrészlet alapértelmezetten kétszeres nagyításban (zoom funkció). A cursort a kép felett mozgatva a “nagyító” kövesse a cursor mozgását, ezáltal végig lehessen pásztázni a kép összes részletén. A komponens mellett jobbra függőlegesen legyen egy csúszka, amivel a zoomolás mértéke állítható 1-10x nagyítási mérték között, a komponens alatt pedig legyen egy másik csúszka, amivel a kinagyított kép szaturációját lehet beállítani 0-100% érték között. A billentyűzeten a jobbra balra nyilakkal lehessen a szaturációs értéket állítani, az egér görgőjével pedig a zoom mértékét. ✓
 
-Extra tasks: 
+Extra tasks:
+
 1. A szaturációs csúszka helyett legyen 3 db csúszka külön minden szín csatornához (RGB), amivel a kép pixelértékeit lehet az adott csatornán 0 és 100% között állítani. Például ha a piros és a zöld csúszkát 0%-ra állítjuk, akkor csak kék szín jelenjen meg a képen (kékárnyalatos kép), amennyiben mind a 3 csuszka értéke 0%, abban az esetben pedig teljesen fekete képet kapjunk. Ez esetben a billentyűzeten a nyilak mellett egy “r” “g” és “b” gombot nyomva lehessen mozgatni a csúszkákat. ✓
 
 2. A “nagyító” easinggel kövesse az egeret. ✓
