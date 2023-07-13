@@ -1,6 +1,7 @@
 # Vidarex homework
 
 Hi, this is my implementation of the frontend task for the 2nd round. I hope you will like it.
+<br/> I have finished development on the 12th of July, 6pm.
 
 ## 🌐 Live Demo
 
