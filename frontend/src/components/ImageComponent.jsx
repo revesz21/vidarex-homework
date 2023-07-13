@@ -29,7 +29,7 @@ function ImageComponent({ image }) {
         drawImage(this);
       };
       imageObj.src = image;
-}, [image, red, green, blue]);
+  }, [image, red, green, blue]);
 
   function drawImage(imageObj){
     const canvas = document.getElementById("canvas");
@@ -40,35 +40,35 @@ function ImageComponent({ image }) {
     const ratio  = Math.min ( hRatio, vRatio );
     context.drawImage(imageObj, 0,0, imageObj.width, imageObj.height, 0,0,imageObj.width*ratio, imageObj.height*ratio);
     redrawImage(canvas, imageObj)
-}
-
-function redrawImage(canvas, imageObj){
-  const hiddenCanvas = document.createElement('canvas');
-  hiddenCanvas.id = "hiddenCanvas";
-  hiddenCanvas.width = 768;
-  hiddenCanvas.height = 432;
-
-  const context = hiddenCanvas.getContext("2d");
-  
-
-  const hRatio = hiddenCanvas.width / imageObj.width;
-  const vRatio = hiddenCanvas.height / imageObj.height;
-  const ratio  = Math.min ( hRatio, vRatio );
-  context.drawImage(imageObj, 0,0, imageObj.width, imageObj.height, 0,0,imageObj.width*ratio, imageObj.height*ratio);
-
-  const imageData = context.getImageData(0, 0, hiddenCanvas.width, hiddenCanvas.height);
-  const data = imageData.data;
-
-  for (var i = 0; i < data.length; i += 4) {
-      var r = data[i];
-      data[i] = r * red;
-      var g = data[i + 1];
-      data[i + 1] = g * green;
-      var b = data[i + 2];
-      data[i + 2] = b * blue;
   }
-  canvas.getContext("2d").putImageData(imageData, 0, 0);
-}
+
+  function redrawImage(canvas, imageObj){
+    const hiddenCanvas = document.createElement('canvas');
+    hiddenCanvas.id = "hiddenCanvas";
+    hiddenCanvas.width = 768;
+    hiddenCanvas.height = 432;
+
+    const context = hiddenCanvas.getContext("2d");
+    
+
+    const hRatio = hiddenCanvas.width / imageObj.width;
+    const vRatio = hiddenCanvas.height / imageObj.height;
+    const ratio  = Math.min ( hRatio, vRatio );
+    context.drawImage(imageObj, 0,0, imageObj.width, imageObj.height, 0,0,imageObj.width*ratio, imageObj.height*ratio);
+
+    const imageData = context.getImageData(0, 0, hiddenCanvas.width, hiddenCanvas.height);
+    const data = imageData.data;
+
+    for (var i = 0; i < data.length; i += 4) {
+        var r = data[i];
+        data[i] = r * red;
+        var g = data[i + 1];
+        data[i + 1] = g * green;
+        var b = data[i + 2];
+        data[i + 2] = b * blue;
+    }
+    canvas.getContext("2d").putImageData(imageData, 0, 0);
+  }
 
     useEffect(() => {
         divRef.current.focus();
@@ -128,12 +128,12 @@ function redrawImage(canvas, imageObj){
 
     const handleMouseEnter = () => {
       setShowMagnifier(true);
-  };
+    };
 
-  const handleMouseLeave = () => {
-      setShowMagnifier(false);
-      setMagnifierGlassStyle({});
-  };
+    const handleMouseLeave = () => {
+        setShowMagnifier(false);
+        setMagnifierGlassStyle({});
+    };
 
     const handleZoomChange = (e) => {
         setZoom(e.target.value);
@@ -147,7 +147,7 @@ function redrawImage(canvas, imageObj){
       }else if(e.target.id == "blue"){
         setBlue(e.target.value/100)
       }
-  }
+    }
 
     const handleWheel = (e) => {
         const newZoom = Math.min(10, Math.max(1, zoom + e.deltaY * -0.1));
@@ -157,37 +157,36 @@ function redrawImage(canvas, imageObj){
     };
 
     const handleKeyDown = (e) => {
-      if(e.code === "KeyR"){
-        setFocusedColor("red");
-      }
-      if(e.code === "KeyG"){
-        setFocusedColor("green");
-      }
-      if(e.code === "KeyB"){
-        setFocusedColor("blue");
-      }
-    
-      if (e.code === "ArrowRight") {
-        if(focusedColor === "red"){
-          setRed(Math.min(1, red + 0.01));
-        }
-        if(focusedColor === "green"){
-          setGreen(Math.min(1, green + 0.01));
-        }
-        if(focusedColor === "blue"){
-          setBlue(Math.min(1, blue + 0.01));
-        } 
-      }
-      if (e.code === "ArrowLeft") {
-        if(focusedColor === "red"){
-          setRed(Math.max(0, red - 0.01));
-        }
-        if(focusedColor === "green"){
-          setGreen(Math.max(0, green - 0.01));
-        }
-        if(focusedColor === "blue"){
-          setBlue(Math.max(0, blue - 0.01));
-        } 
+      switch (e.code) {
+        case "KeyR":
+          setFocusedColor("red");
+          break;
+        case "KeyG":
+          setFocusedColor("green");
+          break;
+        case "KeyB":
+          setFocusedColor("blue");
+          break;
+        case "ArrowRight":
+          if (focusedColor === "red") {
+            setRed(Math.min(1, red + 0.01));
+          } else if (focusedColor === "green") {
+            setGreen(Math.min(1, green + 0.01));
+          } else if (focusedColor === "blue") {
+            setBlue(Math.min(1, blue + 0.01));
+          }
+          break;
+        case "ArrowLeft":
+          if (focusedColor === "red") {
+            setRed(Math.max(0, red - 0.01));
+          } else if (focusedColor === "green") {
+            setGreen(Math.max(0, green - 0.01));
+          } else if (focusedColor === "blue") {
+            setBlue(Math.max(0, blue - 0.01));
+          }
+          break;
+        default:
+          break;
       }
     };
     
