@@ -14,9 +14,9 @@ The project is live at: [reveszpeter.cloud](https://reveszpeter.cloud/)
 
 ## About the project
 
-- I've included the image in the repository, but in a real-world application I would utilize a cloud-based solution for storing and managing images to be as scalable and secure as possible. Also if it would have been a larger project I would have probaly seperated it into smaller components.
+- While working on the RGB sliders, I had to change my approach completely from the one that was enough for the saturation, and this solution is where I could make the application smooth and sharp at the same time while also implementing the RGB functionality.
 - On a mouse, scrolling up zooms in, matching the natural expectation. However, on touchpads the opposite happens since the downward gesture moves the page up.
-- I tried different ways for the implementation, and this final one is where I could make the application smooth and sharp at the same time.
+- I've included the image in the repository, but in a real-world application I would utilize a cloud-based solution to be as scalable and secure as possible. Also if it would have been a larger project I would have probaly seperated it into smaller components.
 
 ## Task overview ✓
 
