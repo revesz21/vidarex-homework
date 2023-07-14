@@ -8,6 +8,21 @@ Hi, this is my implementation of the frontend task for the 2nd round. I hope you
 The project is live at: [reveszpeter.cloud](https://reveszpeter.cloud/)
 <br/> Upon visiting, you might need to wait a few seconds because of the hosting provider.
 
+## 🪲 Known Bugs
+
+After submission I was still testing the project, and found this bug:
+
+I was getting NaN for the zoom value when setting the slider with a click and then scrolling because the e.target.value property of the range input was a string, and the zoom state was expecting a number.
+
+The e.target.value had to be converted to a number using the parseFloat function when setting the zoom state in the handleZoomChange:
+
+```js
+const handleZoomChange = (e) => {
+  const newZoom = parseFloat(e.target.value);
+  setZoom(newZoom);
+};
+```
+
 ## 🛠️ Built With
 
 - [React](https://reactjs.org/)
